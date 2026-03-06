@@ -1,7 +1,8 @@
 import { useMemo, useState, useCallback } from "react"
 import { DataTable } from "@/components/table/DataTable"
 import data from "./data/data.json"
-import { createColumns } from "./columns.tsx"
+import { columns, SelectionContext } from "./columns"
+import "./ComparisionTable.css"
 
 export function ComparisionTable() {
   const [selectedSymbols, setSelectedSymbols] = useState<Set<string>>(
@@ -24,16 +25,19 @@ export function ComparisionTable() {
     })
   }, [])
 
-  const columns = useMemo(
-    () =>
-      createColumns({
-        selectedSymbols,
-        selectedCount: selectedSymbols.size,
-        maxSelected,
-        onToggle: handleToggle,
-      }),
+  const selectionContextValue = useMemo(
+    () => ({
+      selectedSymbols,
+      selectedCount: selectedSymbols.size,
+      maxSelected,
+      onToggle: handleToggle,
+    }),
     [selectedSymbols, handleToggle, maxSelected]
   )
 
-  return <DataTable columns={columns} data={data} />
+  return (
+    <SelectionContext.Provider value={selectionContextValue}>
+      <DataTable columns={columns} data={data} />
+    </SelectionContext.Provider>
+  )
 }

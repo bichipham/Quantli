@@ -17,7 +17,13 @@ export function DataTable({ columns, data } : { columns: any, data: any }) {
         {table.getHeaderGroups().map(headerGroup => (
           <tr key={headerGroup.id}>
             {headerGroup.headers.map(header => (
-              <th key={header.id}>
+              <th
+                key={header.id}
+                className={
+                  (header.column.columnDef.meta as { className?: string })
+                    ?.className
+                }
+              >
                 {flexRender(
                   header.column.columnDef.header,
                   header.getContext()
@@ -32,7 +38,13 @@ export function DataTable({ columns, data } : { columns: any, data: any }) {
         {table.getRowModel().rows.map(row => (
           <tr key={row.id}>
             {row.getVisibleCells().map(cell => (
-              <td key={cell.id}>
+              <td
+                key={cell.id}
+                className={
+                  (cell.column.columnDef.meta as { className?: string })
+                    ?.className
+                }
+              >
                 {flexRender(
                   cell.column.columnDef.cell,
                   cell.getContext()

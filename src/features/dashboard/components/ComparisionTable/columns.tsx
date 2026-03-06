@@ -1,8 +1,9 @@
+import { createContext, memo, useContext } from "react"
 import type { ColumnDef } from "@tanstack/react-table"
 import { Avatar } from "@/components/avatar"
 import { Checkbox } from "@/components/checkbox"
+import { convertCurrency } from "@/utils"
 import type { Stock } from "../../type/stock"
-import React from "react"
 
 const formatPercent = (value: number) => `${value.toFixed(2)}%`
 
@@ -24,51 +25,69 @@ const renderSignedValue = (value: unknown) => {
   )
 }
 
-type ColumnsParams = {
+
+
+type SelectionContextValue = {
   selectedSymbols: Set<string>
   selectedCount: number
   maxSelected: number
   onToggle: (symbol: string) => void
 }
 
-const CompanyCell = ({ stock }: { stock: Stock }) => (
-  <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-    <Avatar src={stock.logo} alt={stock.companyName} size="small" />
+export const SelectionContext = createContext<SelectionContextValue | null>(null)
 
+const useSelectionContext = () => {
+  const context = useContext(SelectionContext)
+  if (!context) {
+    return {
+      selectedSymbols: new Set<string>(),
+      selectedCount: 0,
+      maxSelected: 0,
+      onToggle: () => {},
+    }
+  }
+  return context
+}
+
+const CompanyCell = memo(({ stock }: { stock: Stock }) => (
+  <div className="company-cell">
+    <Avatar src={stock.logo} alt={stock.companyName} size="small" />
     <div>
-      <div>{stock.companyName}</div>
-      <div style={{ fontSize: 12, color: "#64748b" }}>
-        {stock.symbolCode}
+      <div className="company-name" title={stock.companyName}>
+        {stock.companyName}
       </div>
+      <div className="company-meta">{stock.symbolCode}</div>
     </div>
   </div>
-)
+))
 
-export const createColumns = ({
-  selectedSymbols,
-  selectedCount,
-  maxSelected,
-  onToggle,
-}: ColumnsParams): ColumnDef<Stock>[] => [
+const SelectHeader = () => {
+  const { selectedCount, maxSelected } = useSelectionContext()
+  return `(${selectedCount}/${maxSelected})`
+}
+
+const SelectCell = ({ stock }: { stock: Stock }) => {
+  const { selectedSymbols, selectedCount, maxSelected, onToggle } =
+    useSelectionContext()
+  const symbol = stock.symbolCode
+  const checked = selectedSymbols.has(symbol)
+  const disabled = !checked && selectedCount >= maxSelected
+
+  return (
+    <Checkbox
+      checked={checked}
+      disabled={disabled}
+      onChange={() => onToggle(symbol)}
+    />
+  )
+}
+
+export const columns: ColumnDef<Stock>[] = [
   {
     id: "select",
-    header: `Selected (${selectedCount}/${maxSelected})`,
-    cell: ({ row }) => {
-      const symbol = row.original.symbolCode
-      const checked = selectedSymbols.has(symbol)
-      const disabled = !checked && selectedCount >= maxSelected
-
-      return (
-        <Checkbox
-          checked={checked}
-          disabled={disabled}
-          onChange={() => onToggle(symbol)}
-          inputProps={{
-            "aria-label": `Select ${symbol}`,
-          }}
-        />
-      )
-    },
+    header: () => <SelectHeader />,
+    cell: ({ row }) => <SelectCell stock={row.original} />,
+    meta: { className: "column-select" },
   },
 
   {
@@ -82,7 +101,7 @@ export const createColumns = ({
     header: "Market Cap",
     cell: ({ getValue }) => {
       const value = getValue<number>()
-      return value ? `$${value.toLocaleString()}` : "-"
+      return `$${convertCurrency(value)}`
     },
   },
 
@@ -107,5 +126,3 @@ export const createColumns = ({
     cell: ({ getValue }) => renderSignedValue(getValue()),
   },
 ]
-
-export default createColumns

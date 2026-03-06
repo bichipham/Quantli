@@ -7,3 +7,10 @@ export type Stock = {
   revenueGrowthTtmYoy?: number
   currentDividendYieldTtm?: number
 }
+
+export type ComparisionTableColumnsParams = {
+  selectedSymbols: Set<string>
+  selectedCount: number
+  maxSelected: number
+  onToggle: (symbol: string) => void
+}
