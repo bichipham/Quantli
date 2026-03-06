@@ -183,6 +183,21 @@ tbody tr:last-child {
   border-color: rgba(148, 163, 184, 0.4);
 }
 
+.value-positive {
+  color: #16a34a;
+  font-weight: 600;
+}
+
+.value-negative {
+  color: #dc2626;
+  font-weight: 600;
+}
+
+.value-neutral {
+  color: #475569;
+  font-weight: 600;
+}
+
 .pill.positive {
   border-color: rgba(56, 189, 248, 0.6);
 }
