@@ -1,13 +1,38 @@
 import {
   useReactTable,
   getCoreRowModel,
-  flexRender
-} from '@tanstack/react-table'
+  flexRender,
+} from "@tanstack/react-table"
+import type {
+  RowSelectionState,
+  Updater
+} from "@tanstack/react-table"
 
-export function DataTable({ columns, data } : { columns: any, data: any }) {
+type Props<T> = {
+  columns: any
+  data: T[]
+  rowSelection?: RowSelectionState
+  onRowSelectionChange?: (updater: Updater<RowSelectionState>) => void
+  getRowId?: (row: T) => string
+}
+
+export function DataTable<T>({
+  columns,
+  data,
+  rowSelection,
+  onRowSelectionChange,
+  getRowId,
+}: Props<T>) {
+
   const table = useReactTable({
     columns,
     data,
+    state: {
+      rowSelection,
+    },
+    enableRowSelection: true,
+    onRowSelectionChange,
+    getRowId,
     getCoreRowModel: getCoreRowModel(),
   })
 

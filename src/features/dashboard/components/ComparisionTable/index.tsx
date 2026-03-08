@@ -2,16 +2,42 @@ import { useState } from "react"
 import { DataTable } from "@/components/table/DataTable"
 import data from "./data/data.json"
 import { columns } from "./columns"
-import "./ComparisionTable.css"
+import type { RowSelectionState, Updater } from "@tanstack/react-table"
 
-export default function ComparisionTable() {
-  const [selectedSymbols, setSelectedSymbols] = useState<Set<string>>(
-    () => new Set()
-  )
+type Props = {
+  maxSelected?: number
+  onSelectionChange: (symbols: string[]) => void
+}
 
-  const maxSelected = 4;
+export default function ComparisonTable({
+  maxSelected = 4,
+  onSelectionChange,
+}: Props) {
+
+  const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
+
+const handleSelectionChange = (updater: Updater<RowSelectionState>) => {
+
+  const next =
+    typeof updater === "function"
+      ? updater(rowSelection)
+      : updater
+
+  const selectedIds = Object.keys(next)
+
+  if (selectedIds.length > maxSelected) return
+
+  setRowSelection(next)
+
+  onSelectionChange(selectedIds)
+}
 
   return (
-      <DataTable columns={columns} data={data} />
+    <DataTable
+      columns={columns}
+      data={data}
+      rowSelection={rowSelection}
+      onRowSelectionChange={handleSelectionChange}
+    />
   )
 }
