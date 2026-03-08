@@ -9,6 +9,7 @@ export default function DashboardPage() {
   const [symbols, setSymbols] = useState<string[]>([])
 
   const { data, loading } = useTimeseriesData(symbols)
+	//console.log("Timeseries Data:", data)
 
   const datasets = useMemo(() => {
     const colors = ["#2563eb", "#16a34a", "#f97316", "#9333ea"]

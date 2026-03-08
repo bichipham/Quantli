@@ -1,4 +1,4 @@
-import { createChart, AreaSeries, ColorType } from "lightweight-charts"
+import { createChart, LineSeries, ColorType } from "lightweight-charts"
 import { useEffect, useRef } from "react"
 import type { LineData } from "../../type/chart"
 import "./PerformanceChart.css"
@@ -36,10 +36,8 @@ export default function PerformanceChart({ data, loading = false }: Props) {
     })
 
     data.forEach((item) => {
-      const series = chart.addSeries(AreaSeries, {
-        lineColor: item.color,
-        topColor: `${item.color}66`,
-        bottomColor: `${item.color}10`,
+      const series = chart.addSeries(LineSeries, {
+        color: item.color,
         lineWidth: 2,
       })
 
