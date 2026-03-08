@@ -1,32 +1,91 @@
-import { createChart, AreaSeries } from "lightweight-charts";
-import { useEffect, useRef } from "react";
-import type { LineData } from "../../type/chart";
+import { createChart, AreaSeries, ColorType } from "lightweight-charts"
+import { useEffect, useRef } from "react"
+import type { LineData } from "../../type/chart"
+import "./PerformanceChart.css"
 
+type Props = {
+  data: LineData[]
+  loading?: boolean
+}
 
-
-export default function PerformanceChart({ data: LineData, loading: boolean }: Props) {
-  const chartContainerRef = useRef<HTMLDivElement | null>(null);
+export default function PerformanceChart({ data, loading = false }: Props) {
+  const chartContainerRef = useRef<HTMLDivElement | null>(null)
 
   useEffect(() => {
-    if (!chartContainerRef.current) return;
+    if (!chartContainerRef.current) return
+
+    const container = chartContainerRef.current
 
     const chart = createChart(chartContainerRef.current, {
-      height: 320,
-    });
-    datasets?.forEach((item: LineData) => {
+      height: container.clientHeight,
+      width: container.clientWidth,
+      layout: {
+        background: { type: ColorType.Solid, color: "#ffffff" },
+        textColor: "#0f172a",
+      },
+      grid: {
+        vertLines: { color: "rgba(148, 163, 184, 0.3)" },
+        horzLines: { color: "rgba(148, 163, 184, 0.3)" },
+      },
+      rightPriceScale: {
+        borderColor: "rgba(148, 163, 184, 0.35)",
+      },
+      timeScale: {
+        borderColor: "rgba(148, 163, 184, 0.35)",
+      },
+    })
+
+    data.forEach((item) => {
       const series = chart.addSeries(AreaSeries, {
         lineColor: item.color,
-        topColor: item.color + "66",
-        bottomColor: item.color + "10",
+        topColor: `${item.color}66`,
+        bottomColor: `${item.color}10`,
         lineWidth: 2,
-      });
+      })
 
-      series.setData(item.data);
-    });
+      series.setData(item.data)
+    })
 
-    chart.timeScale().fitContent();
-    return () => chart.remove();
-  }, [datasets]);
+    chart.timeScale().fitContent()
 
-  return <div ref={chartContainerRef} />;
+    const handleResize = () => {
+      if (!container) return
+      chart.applyOptions({
+        width: container.clientWidth,
+        height: container.clientHeight,
+      })
+    }
+
+    window.addEventListener("resize", handleResize)
+
+    return () => {
+      window.removeEventListener("resize", handleResize)
+      chart.remove()
+    }
+  }, [data])
+
+  return (
+    <section className="performance-chart">
+      <h2 className="section-title">Peer Performance Chart</h2>
+      <div className="performance-chart__legend">
+        {data?.map((item) => (
+          <span key={item.symbol} className="legend-item">
+            <span
+              className="legend-swatch"
+              style={{ backgroundColor: item.color }}
+            />
+            {item.symbol}
+          </span>
+        ))}
+      </div>
+      <div className="performance-chart__canvas" ref={chartContainerRef}>
+        {loading ? (
+          <div className="performance-chart__loading">Loading...</div>
+        ) : null}
+      </div>
+      <p className="performance-chart__note">
+        Select up to 4 companies in the table above to customize the chart view
+      </p>
+    </section>
+  )
 }

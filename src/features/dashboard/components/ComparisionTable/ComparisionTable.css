@@ -2,10 +2,17 @@
   overflow-x: auto;
 }
 
+.comparison-table {
+  background: #ffffff;
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  border-radius: 16px;
+  padding: 16px;
+}
+
 table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 0.9rem;
+  font-size: 0.82rem;
   table-layout: fixed;
   background: #ffffff;
 }
@@ -28,13 +35,19 @@ td {
 }
 
 thead th {
-  color: #475569;
+  color: #94a3b8;
   font-weight: 600;
   border-bottom: 1px solid rgba(148, 163, 184, 0.35);
+  background: #f1f5f9;
 }
 
 tbody tr {
   border-bottom: 1px solid rgba(148, 163, 184, 0.2);
+  transition: background 0.2s ease;
+}
+
+tbody tr:hover {
+  background: #f8fafc;
 }
 
 tbody tr:last-child {

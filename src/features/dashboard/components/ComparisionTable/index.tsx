@@ -33,12 +33,16 @@ const handleSelectionChange = (updater: Updater<RowSelectionState>) => {
 }
 
   return (
-    <DataTable
-      columns={columns}
-      data={data}
-      rowSelection={rowSelection}
-      onRowSelectionChange={handleSelectionChange}
-      tableMeta={{ maxSelected }}
-    />
+    <div className="comparison-table">
+      <h2 className="section-title">Peer Comparison Table</h2>
+      <DataTable
+        columns={columns}
+        data={data}
+        rowSelection={rowSelection}
+        onRowSelectionChange={handleSelectionChange}
+        tableMeta={{ maxSelected }}
+        getRowId={(row) => row.companyName}
+      />
+    </div>
   )
 }

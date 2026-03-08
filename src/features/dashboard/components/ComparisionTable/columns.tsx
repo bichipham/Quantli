@@ -1,7 +1,7 @@
 import type { ColumnDef } from "@tanstack/react-table";
 import { Avatar } from "@/components/avatar";
 import { Checkbox } from "@/components/checkbox";
-import { convertCurrency } from "@/utils";
+import { convertCurrency } from "@/utils/helpers";
 import type { Stock } from "../../type/stock";
 import "./ComparisionTable.css";
 
