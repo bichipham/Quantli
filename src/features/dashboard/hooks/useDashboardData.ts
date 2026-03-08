@@ -8,7 +8,7 @@ type ChartPoint = {
 
 type ChartDataMap = Record<string, ChartPoint[]>
 
-export default function useTimeseriesData(symbols: string[]) {
+export const useTimeseriesData = (symbols: string[]) => {
   const [data, setData] = useState<ChartDataMap>({})
   const [loading, setLoading] = useState(false)
 

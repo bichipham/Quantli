@@ -1,6 +1,6 @@
 import { useState } from "react"
 import ComparisonTable from "./components/ComparisionTable"
-import { useTimeseriesData } from "./hooks/useTimeseriesData"
+import {useTimeseriesData} from "./hooks/useDashboardData"
 import PerformanceChart from "./components/PerformanceChart"
 
 export default function DashboardPage() {
@@ -17,9 +17,9 @@ export default function DashboardPage() {
       />
 
       <PerformanceChart
-        symbols={symbols}
-        data={data}
-        loading={loading}
+       // symbols={symbols}
+     //   datasets={data}
+      //  loading={loading}
       />
     </>
   )

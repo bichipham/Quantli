@@ -47,14 +47,14 @@ export function Checkbox(props: CheckboxProps) {
           opacity: 1,
         },
         "&.Mui-disabled .MuiSvgIcon-root": {
-          color: "#9ca3af",
+          color: "#6b7280",
         },
         "&.Mui-disabled span": {
-          borderColor: "#d1d5db",
-          backgroundColor: "#e5e7eb",
+          borderColor: "#6b7280",
+          backgroundColor: "#d1d5db",
         },
         "&.Mui-disabled span svg": {
-          color: "#9ca3af",
+          color: "#6b7280",
         },
       }}
     />

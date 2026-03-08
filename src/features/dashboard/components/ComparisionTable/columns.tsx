@@ -32,15 +32,12 @@ const renderSignedValue = (value: unknown) => {
 export const columns: ColumnDef<Stock>[] = [
   {
     id: "select",
-
     header: ({ table }) => (
-      <Checkbox
-        checked={table.getIsAllRowsSelected()}
-        indeterminate={table.getIsSomeRowsSelected()}
-        onChange={table.getToggleAllRowsSelectedHandler()}
-      />
+      <span className="select-count">
+        ({table.getSelectedRowModel().rows.length}/
+        {(table.options.meta as { maxSelected?: number })?.maxSelected ?? 0})
+      </span>
     ),
-
     cell: ({ row }) => (
       <Checkbox
         checked={row.getIsSelected()}
@@ -48,6 +45,7 @@ export const columns: ColumnDef<Stock>[] = [
         onChange={row.getToggleSelectedHandler()}
       />
     ),
+    meta: { className: "column-select" },
   },
   {
     accessorKey: "companyName",

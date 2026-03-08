@@ -2,11 +2,9 @@ import { createChart, AreaSeries } from "lightweight-charts";
 import { useEffect, useRef } from "react";
 import type { LineData } from "../../type/chart";
 
-type Props = {
-  datasets: LineData[];
-};
 
-export default function PerformanceChart({ datasets }: Props) {
+
+export default function PerformanceChart({ data: LineData, loading: boolean }: Props) {
   const chartContainerRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {

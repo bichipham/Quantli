@@ -38,6 +38,7 @@ const handleSelectionChange = (updater: Updater<RowSelectionState>) => {
       data={data}
       rowSelection={rowSelection}
       onRowSelectionChange={handleSelectionChange}
+      tableMeta={{ maxSelected }}
     />
   )
 }

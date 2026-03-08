@@ -14,6 +14,7 @@ type Props<T> = {
   rowSelection?: RowSelectionState
   onRowSelectionChange?: (updater: Updater<RowSelectionState>) => void
   getRowId?: (row: T) => string
+  tableMeta?: Record<string, unknown>
 }
 
 export function DataTable<T>({
@@ -22,11 +23,13 @@ export function DataTable<T>({
   rowSelection,
   onRowSelectionChange,
   getRowId,
+  tableMeta,
 }: Props<T>) {
 
   const table = useReactTable({
     columns,
     data,
+    meta: tableMeta,
     state: {
       rowSelection,
     },

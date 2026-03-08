@@ -7,6 +7,7 @@ table {
   border-collapse: collapse;
   font-size: 0.9rem;
   table-layout: fixed;
+  background: #ffffff;
 }
 
 th,
@@ -16,8 +17,14 @@ td {
 }
 
 .column-select {
-  width: 44px;
+  width: 50px;
   text-align: center;
+}
+
+.select-count {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #475569;
 }
 
 thead th {
