@@ -19,8 +19,9 @@ table {
 
 th,
 td {
-  padding: 12px 10px;
+  padding: 8px 10px;
   text-align: left;
+  line-height: 1.2;
 }
 
 .column-select {
@@ -96,7 +97,7 @@ tbody tr:last-child {
 @media (max-width: 720px) {
   th,
   td {
-    padding: 10px 6px;
+    padding: 6px 6px;
   }
 
   .company-name {

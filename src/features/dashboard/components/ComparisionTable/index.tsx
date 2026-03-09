@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { DataTable } from "@/components/table/DataTable"
 import data from "./data/data.json"
 import { columns } from "./columns"
@@ -15,6 +15,18 @@ export default function ComparisonTable({
 }: Props) {
 
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
+
+  useEffect(() => {
+    if (!data.length) return
+
+    const initialSelection: RowSelectionState = {}
+    data.slice(0, maxSelected).forEach((row) => {
+      initialSelection[row.companyName] = true
+    })
+
+    setRowSelection(initialSelection)
+    onSelectionChange(Object.keys(initialSelection))
+  }, [])
 
 const handleSelectionChange = (updater: Updater<RowSelectionState>) => {
 

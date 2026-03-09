@@ -1,6 +1,8 @@
-import { createChart, LineSeries, ColorType } from "lightweight-charts"
-import { useEffect, useRef } from "react"
+import { useEffect, useMemo, useRef } from "react"
+import { ColorType } from "lightweight-charts"
 import type { LineData } from "../../type/chart"
+import { useLightweightChart } from "@/components/chart/useLightweightChart"
+import { useChartSeries } from "@/components/chart/useChartSeries"
 import "./PerformanceChart.css"
 
 type Props = {
@@ -10,15 +12,8 @@ type Props = {
 
 export default function PerformanceChart({ data, loading = false }: Props) {
   const chartContainerRef = useRef<HTMLDivElement | null>(null)
-
-  useEffect(() => {
-    if (!chartContainerRef.current) return
-
-    const container = chartContainerRef.current
-
-    const chart = createChart(chartContainerRef.current, {
-      height: container.clientHeight,
-      width: container.clientWidth,
+  const chartOptions = useMemo(
+    () => ({
       layout: {
         background: { type: ColorType.Solid, color: "#ffffff" },
         textColor: "#0f172a",
@@ -35,58 +30,58 @@ export default function PerformanceChart({ data, loading = false }: Props) {
         borderColor: "rgba(148, 163, 184, 0.35)",
         rightOffset: 6,
       },
-    })
+    }),
+    []
+  )
+  const chartRef = useLightweightChart(chartContainerRef.current, chartOptions)
 
-    data.forEach((item) => {
-      const series = chart.addSeries(LineSeries, {
-        color: item.color,
-        lineWidth: 2,
-        priceFormat: {
-          type: "percent",
-          precision: 2,
-          minMove: 0.01,
-        },
-      })
+  const toBusinessDay = (date: Date) => ({
+    year: date.getUTCFullYear(),
+    month: date.getUTCMonth() + 1,
+    day: date.getUTCDate(),
+  })
 
-      series.setData(item.data)
-    })
+  useChartSeries(chartRef, data)
 
-    const getLatestDate = () => {
-      const allDates = data.flatMap((item) => item.data.map((p) => p.time))
-      if (!allDates.length) return null
-      const maxDate = allDates.reduce((max, current) =>
-        current > max ? current : max
-      )
-      return maxDate
-    }
+  const timeRange = useMemo(() => {
+    const allDates = data
+      .flatMap((item) => item.data.map((p) => p.time))
+      .filter(Boolean)
+    if (!allDates.length) return null
 
-    const latest = getLatestDate()
-    if (latest) {
-      const latestDate = new Date(latest)
-      const fromDate = new Date(latestDate)
-      fromDate.setMonth(fromDate.getMonth() - 6)
-      const from = fromDate.toISOString().slice(0, 10)
-      const to = latestDate.toISOString().slice(0, 10)
-      chart.timeScale().setVisibleRange({ from, to })
-    } else {
-      chart.timeScale().fitContent()
-    }
+    const maxDate = allDates.reduce((max, current) =>
+      current > max ? current : max
+    )
+    const latestDate = new Date(maxDate)
+    if (Number.isNaN(latestDate.getTime())) return null
 
-    const handleResize = () => {
-      if (!container) return
-      chart.applyOptions({
-        width: container.clientWidth,
-        height: container.clientHeight,
-      })
-    }
+    const fromDate = new Date(latestDate)
+    fromDate.setMonth(fromDate.getMonth() - 6)
 
-    window.addEventListener("resize", handleResize)
-
-    return () => {
-      window.removeEventListener("resize", handleResize)
-      chart.remove()
+    return {
+      from: toBusinessDay(fromDate),
+      to: toBusinessDay(latestDate),
     }
   }, [data])
+
+  useEffect(() => {
+    const chart = chartRef.current
+    if (!chart) return
+
+    const timeScale = chart.timeScale?.()
+    if (!timeScale) return
+
+    if (!timeRange) {
+      timeScale.fitContent()
+      return
+    }
+
+    try {
+      timeScale.setVisibleRange(timeRange)
+    } catch {
+      timeScale.fitContent()
+    }
+  }, [chartRef, timeRange])
 
   return (
     <section className="performance-chart">

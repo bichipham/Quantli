@@ -54,7 +54,7 @@ export const columns: ColumnDef<Stock>[] = [
       const stock = row.original;
       return (
         <div className="company-cell">
-          <Avatar src={stock.logo} alt={stock.companyName} size="small" />
+          <Avatar src={stock.logo} alt={stock.companyName} size="small" sx={{ width: 22, height: 22 }} />
           <div>
             <div className="company-name">{stock.companyName}</div>
             <div className="company-meta">{stock.symbolCode}</div>
