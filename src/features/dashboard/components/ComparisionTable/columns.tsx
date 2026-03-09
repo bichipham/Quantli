@@ -38,13 +38,21 @@ export const columns: ColumnDef<Stock>[] = [
         {(table.options.meta as { maxSelected?: number })?.maxSelected ?? 0})
       </span>
     ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        disabled={!row.getCanSelect()}
-        onChange={row.getToggleSelectedHandler()}
-      />
-    ),
+    cell: ({ row, table }) => {
+      const maxSelected =
+        (table.options.meta as { maxSelected?: number })?.maxSelected ?? 0
+      const selectedCount = table.getSelectedRowModel().rows.length
+      const isSelected = row.getIsSelected()
+      const shouldDisable = !isSelected && selectedCount >= maxSelected
+
+      return (
+        <Checkbox
+          checked={isSelected}
+          disabled={shouldDisable}
+          onChange={row.getToggleSelectedHandler()}
+        />
+      )
+    },
     meta: { className: "column-select" },
   },
   {

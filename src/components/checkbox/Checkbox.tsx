@@ -16,10 +16,8 @@ export function Checkbox(props: CheckboxProps) {
           style={{
             width: 22,
             height: 22,
-            border: "1.5px solid #9ca3af",
             borderRadius: 4,
             display: "inline-block",
-            background: "#fff",
           }}
         />
       }
@@ -29,7 +27,6 @@ export function Checkbox(props: CheckboxProps) {
           style={{
             width: 22,
             height: 22,
-            backgroundColor: "#2948d4",
             borderRadius: 4,
             display: "flex",
             alignItems: "center",
@@ -48,23 +45,37 @@ export function Checkbox(props: CheckboxProps) {
       sx={{
         padding: 0,
 
+        ".checkbox-icon": {
+          border: "1.5px solid #9ca3af",
+          backgroundColor: "#fff",
+        },
+
+        ".checkbox-checked": {
+          backgroundColor: "#2948d4",
+        },
+
         "&.Mui-disabled": {
           opacity: 1,
+        },
+        "&.Mui-disabled .MuiSvgIcon-root": {
+          color: "#6b7280",
         },
 
         /* unchecked disabled */
         "&.Mui-disabled .checkbox-icon": {
-          borderColor: "#6b7280",
-          backgroundColor: "#e5e7eb",
+          borderColor: "#cbd5f0",
+          backgroundColor: "#f1f5f9",
+          borderWidth: 1,
         },
 
         /* checked disabled */
         "&.Mui-disabled .checkbox-checked": {
-          backgroundColor: "#6b7280",
+          backgroundColor: "#cbd5f0",
+          borderColor: "#cbd5f0",
         },
 
         "&.Mui-disabled .checkbox-checked svg": {
-          color: "#f3f4f6",
+          color: "#ffffff",
         },
       }}
     />
