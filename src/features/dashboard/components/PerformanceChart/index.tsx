@@ -22,14 +22,13 @@ export default function PerformanceChart({ data, loading = false }: Props) {
         vertLines: { color: "rgba(148, 163, 184, 0.3)" },
         horzLines: { color: "rgba(148, 163, 184, 0.3)" },
       },
-			leftPriceScale: {
+      leftPriceScale: {
         visible: false,
-        // minimumWidth: 40,
       },
       rightPriceScale: {
 				visible: true,
         borderColor: "rgba(148, 163, 184, 0.35)",
-        minimumWidth: 80,
+        minimumWidth: 180,
         scaleMargins: {
           top: 0.1,
           bottom: 0.25,

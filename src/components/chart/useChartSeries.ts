@@ -4,9 +4,28 @@ import { LineSeries } from "lightweight-charts"
 import type { LineData } from "@/features/dashboard/type/chart"
 import { COLORS } from "./chartColors"
 
+type SeriesFactory = (
+  chart: IChartApi,
+  options: {
+    color: string
+  }
+) => ISeriesApi<"Line">
+
+const defaultSeriesFactory: SeriesFactory = (chart, options) =>
+  chart.addSeries(LineSeries, {
+    color: options.color,
+    lineWidth: 2,
+    priceFormat: {
+      type: "percent",
+      precision: 2,
+      minMove: 0.01,
+    },
+  })
+
 export function useChartSeries(
   chartRef: React.RefObject<IChartApi | null>,
-  datasets: LineData[]
+  datasets: LineData[],
+  createSeries: SeriesFactory = defaultSeriesFactory
 ) {
   const seriesMap = useRef<Map<string, ISeriesApi<"Line">>>(new Map())
 
@@ -19,16 +38,7 @@ export function useChartSeries(
       const color = dataset.color || COLORS[index % COLORS.length]
 
       if (!seriesMap.current.has(symbol)) {
-        const series = chart.addSeries(LineSeries, {
-          color,
-          lineWidth: 2,
-          priceFormat: {
-            type: "percent",
-            precision: 2,
-            minMove: 0.01,
-          },
-        })
-
+        const series = createSeries(chart, { color })
         series.setData(dataset.data ?? [])
         seriesMap.current.set(symbol, series)
       } else {
@@ -43,5 +53,5 @@ export function useChartSeries(
         seriesMap.current.delete(symbol)
       }
     })
-  }, [chartRef, datasets])
+  }, [chartRef, datasets, createSeries])
 }

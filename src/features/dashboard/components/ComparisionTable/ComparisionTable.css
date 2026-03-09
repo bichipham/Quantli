@@ -19,9 +19,9 @@ table {
 
 th,
 td {
-  padding: 8px 10px;
+  padding: 8px 8px;
   text-align: left;
-  line-height: 1.2;
+  line-height: 1.1;
 }
 
 .column-select {
@@ -75,7 +75,7 @@ tbody tr:last-child {
 }
 
 .company-meta {
-  font-size: 12px;
+  font-size: 10px;
   color: #64748b;
 }
 

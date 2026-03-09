@@ -14,8 +14,8 @@ export function Checkbox(props: CheckboxProps) {
         <span
           className="checkbox-icon"
           style={{
-            width: 22,
-            height: 22,
+            width: 16,
+            height: 16,
             borderRadius: 4,
             display: "inline-block",
           }}
@@ -25,8 +25,8 @@ export function Checkbox(props: CheckboxProps) {
         <span
           className="checkbox-checked"
           style={{
-            width: 22,
-            height: 22,
+            width: 16,
+            height: 16,
             borderRadius: 4,
             display: "flex",
             alignItems: "center",
@@ -36,7 +36,7 @@ export function Checkbox(props: CheckboxProps) {
           <CheckIcon
             style={{
               color: "white",
-              fontSize: 18,
+              fontSize: 12,
               fontWeight: 900,
             }}
           />
