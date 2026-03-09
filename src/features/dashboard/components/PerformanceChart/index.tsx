@@ -1,12 +1,12 @@
 import { useEffect, useMemo, useRef } from "react";
 import { ColorType } from "lightweight-charts";
-import type { LineData } from "../../type/chart";
 import { useLightweightChart } from "@/components/chart/useLightweightChart";
 import { useChartSeries } from "@/components/chart/useChartSeries";
+import type { ChartSeriesData } from "@/features/dashboard/type/chart";
 import "./PerformanceChart.css";
 
 type Props = {
-  data: LineData[];
+  data: ChartSeriesData[];
   loading?: boolean;
 };
 
@@ -63,7 +63,9 @@ export default function PerformanceChart({ data, loading = false }: Props) {
 
   const timeRange = useMemo(() => {
     const allDates = data
-      .flatMap((item) => item.data.map((p) => p.time))
+      .flatMap((item) =>
+        item.data.map((point) => (point as { time: string | number | Date }).time),
+      )
       .filter(Boolean);
     if (!allDates.length) return null;
 
