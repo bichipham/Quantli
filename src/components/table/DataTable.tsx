@@ -4,17 +4,19 @@ import {
   flexRender,
 } from "@tanstack/react-table"
 import type {
+  ColumnDef,
+  TableMeta,
   RowSelectionState,
   Updater
 } from "@tanstack/react-table"
 
 type Props<T> = {
-  columns: any
+  columns: ColumnDef<T, unknown>[]
   data: T[]
   rowSelection?: RowSelectionState
   onRowSelectionChange?: (updater: Updater<RowSelectionState>) => void
   getRowId?: (row: T) => string
-  tableMeta?: Record<string, unknown>
+  tableMeta?: TableMeta<T>
 }
 
 export function DataTable<T>({

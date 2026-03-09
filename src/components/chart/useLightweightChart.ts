@@ -1,11 +1,16 @@
-import { createChart, type ChartOptions, type DeepPartial } from "lightweight-charts"
+import {
+  createChart,
+  type IChartApi,
+  type ChartOptions,
+  type DeepPartial,
+} from "lightweight-charts"
 import { useEffect, useRef } from "react"
 
 export function useLightweightChart(
   container: HTMLDivElement | null,
   options?: DeepPartial<ChartOptions>
 ) {
-  const chartRef = useRef<any>(null)
+  const chartRef = useRef<IChartApi | null>(null)
 
   useEffect(() => {
     if (!container) return

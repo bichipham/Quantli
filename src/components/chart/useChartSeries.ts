@@ -1,10 +1,14 @@
 import { useEffect, useRef } from "react"
+import type { IChartApi, ISeriesApi } from "lightweight-charts"
 import { LineSeries } from "lightweight-charts"
 import type { LineData } from "@/features/dashboard/type/chart"
 import { COLORS } from "./chartColors"
 
-export function useChartSeries(chartRef: any, datasets: LineData[]) {
-  const seriesMap = useRef<Map<string, any>>(new Map())
+export function useChartSeries(
+  chartRef: React.RefObject<IChartApi | null>,
+  datasets: LineData[]
+) {
+  const seriesMap = useRef<Map<string, ISeriesApi<"Line">>>(new Map())
 
   useEffect(() => {
     const chart = chartRef.current
@@ -29,7 +33,7 @@ export function useChartSeries(chartRef: any, datasets: LineData[]) {
         seriesMap.current.set(symbol, series)
       } else {
         const series = seriesMap.current.get(symbol)
-        series.setData(dataset.data ?? [])
+        series?.setData(dataset.data ?? [])
       }
     })
 
