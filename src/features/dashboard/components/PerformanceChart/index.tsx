@@ -28,7 +28,7 @@ export default function PerformanceChart({ data, loading = false }: Props) {
       rightPriceScale: {
 				visible: true,
         borderColor: "rgba(148, 163, 184, 0.35)",
-        minimumWidth: 180,
+        minimumWidth: 90,
         scaleMargins: {
           top: 0.1,
           bottom: 0.25,

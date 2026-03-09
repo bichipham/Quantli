@@ -9,7 +9,7 @@
   padding: 16px;
 }
 
-table {
+.comparison-table table {
   width: 100%;
   border-collapse: collapse;
   font-size: 0.82rem;
@@ -17,8 +17,8 @@ table {
   background: #ffffff;
 }
 
-th,
-td {
+.comparison-table th,
+.comparison-table td {
   padding: 8px 8px;
   text-align: left;
   line-height: 1.1;
@@ -35,23 +35,23 @@ td {
   color: #475569;
 }
 
-thead th {
+.comparison-table thead th {
   color: #94a3b8;
   font-weight: 600;
   border-bottom: 1px solid rgba(148, 163, 184, 0.35);
   background: #f1f5f9;
 }
 
-tbody tr {
+.comparison-table tbody tr {
   border-bottom: 1px solid rgba(148, 163, 184, 0.2);
   transition: background 0.2s ease;
 }
 
-tbody tr:hover {
+.comparison-table tbody tr:hover {
   background: #f8fafc;
 }
 
-tbody tr:last-child {
+.comparison-table tbody tr:last-child {
   border-bottom: none;
 }
 
@@ -95,8 +95,8 @@ tbody tr:last-child {
 }
 
 @media (max-width: 720px) {
-  th,
-  td {
+  .comparison-table th,
+  .comparison-table td {
     padding: 6px 6px;
   }
 

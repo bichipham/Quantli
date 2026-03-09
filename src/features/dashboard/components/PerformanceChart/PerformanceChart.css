@@ -21,7 +21,7 @@
 
 .performance-chart__y-label {
 	position: absolute;
-	right: 5px;
+	right: -40px;
 	top: 50%;
 	transform: translateY(-50%) rotate(-90deg);
 	transform-origin: center;
