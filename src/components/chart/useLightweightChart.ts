@@ -18,8 +18,8 @@ export function useLightweightChart(
         textColor: "#111827",
       },
       grid: {
-        vertLines: { visible: false },
-        horzLines: { visible: false },
+        vertLines: { visible: true },
+        horzLines: { visible: true },
       },
       crosshair: {
         mode: 0,
