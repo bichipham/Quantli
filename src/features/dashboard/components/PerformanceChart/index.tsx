@@ -29,9 +29,11 @@ export default function PerformanceChart({ data, loading = false }: Props) {
       },
       rightPriceScale: {
         borderColor: "rgba(148, 163, 184, 0.35)",
+        minimumWidth: 100,
       },
       timeScale: {
         borderColor: "rgba(148, 163, 184, 0.35)",
+        rightOffset: 6,
       },
     })
 
@@ -39,12 +41,36 @@ export default function PerformanceChart({ data, loading = false }: Props) {
       const series = chart.addSeries(LineSeries, {
         color: item.color,
         lineWidth: 2,
+        priceFormat: {
+          type: "percent",
+          precision: 2,
+          minMove: 0.01,
+        },
       })
 
       series.setData(item.data)
     })
 
-    chart.timeScale().fitContent()
+    const getLatestDate = () => {
+      const allDates = data.flatMap((item) => item.data.map((p) => p.time))
+      if (!allDates.length) return null
+      const maxDate = allDates.reduce((max, current) =>
+        current > max ? current : max
+      )
+      return maxDate
+    }
+
+    const latest = getLatestDate()
+    if (latest) {
+      const latestDate = new Date(latest)
+      const fromDate = new Date(latestDate)
+      fromDate.setMonth(fromDate.getMonth() - 6)
+      const from = fromDate.toISOString().slice(0, 10)
+      const to = latestDate.toISOString().slice(0, 10)
+      chart.timeScale().setVisibleRange({ from, to })
+    } else {
+      chart.timeScale().fitContent()
+    }
 
     const handleResize = () => {
       if (!container) return
